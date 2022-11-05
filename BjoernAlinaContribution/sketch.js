@@ -1,29 +1,31 @@
 let topColor;
 let bottomColor;
 let sun;
+let welcomeTextSign;
+let towerOfLove;
 let mountainRanges = [];
 let maxMountainRanges = 6;
 let mountainClouds = [];
 
-let signText = "Welcome to H4"
+let screenX = 1920;
+let screenY = 1080;
 
-/* SANTA
-let santaImage;
-let santaWidth;
-let santaX;
-let drawSanta = false;
-*/
+let signText = "Welcome to H4"
+let x = 666;
+
+function preload() {
+  //myFont = loadFont('DotGothic16-Regular.ttf');
+}
 
 function setup() {
-  createCanvas(1920, 1080);
+  createCanvas(screenX, screenY);
   colorMode(HSB, 255);
-
-  textSize(100);
-  textFont("DotGothic16")
 
   topColor = getBGColor();
   bottomColor = color(hue(topColor), saturation(topColor) * 0.9, brightness(topColor) * 1.5);
   sun = new Sun(topColor);
+  welcomeTextSign = new WelcomeText();
+  towerOfLove = new Tower();
 
   for (let i = 0; i < maxMountainRanges; i++) {
     let mountainRange = new MountainRange(i, maxMountainRanges, topColor);
@@ -36,8 +38,7 @@ function setup() {
 function draw() {
   drawBackground(topColor, bottomColor);
   sun.draw();
-
-  // draw in reverse order (based on zindex)
+  welcomeTextSign.draw();
 
   for (let i = mountainRanges.length - 1; i >= 0; i--) {
 
@@ -49,11 +50,10 @@ function draw() {
     //print("draw mountainRange", mountainRange.height);
     mountainRange.draw();
   }
-
-  if(drawSanta){
-    santaImage.resize(santaWidth, 0);
-    image(santaImage, santaX, sun.y);
-  }
+  towerOfLove.show(50,600,100,500);
+  towerOfLove.show(239,700,100,500);
+  towerOfLove.show(666,666,130,666);
+  towerOfLove.show(1666,666,130,666);
 }
 
 function getBGColor() {
@@ -74,6 +74,40 @@ function drawBackground(top, bottom) {
   ctx.fillStyle = oldFillStyle;
 }
 
+class Tower {
+  constructor() {
+    this.x = random(width);
+    this.y = random(height);
+  }
+
+  show(posX, posY, sizeX, sizeY) {
+    fill(35,23,12);
+    rect(posX, posY, sizeX, sizeY);
+  }
+}
+
+
+class WelcomeText
+{ //文字の表示位置
+
+  constructor() {
+    this.textSize = 100;
+    this.textFont = "DotGothic16";
+    this.shadowColor = color(0, 255, 255);
+    this.shadowBlur = 30;
+  }
+  draw() {
+    let context = drawingContext;
+    context.shadowColor = color(200, 255, 255);
+    context.shadowBlur = 30;
+    textSize(100);
+    textFont("DotGothic16");
+    strokeWeight(1);
+    stroke(0, 255, 255);
+    noFill();
+    text(signText, x, 200);
+  }
+}
 
 class Sun extends Shape {
 
